@@ -31,11 +31,11 @@ class Person:
     def get_lgbt(self,):
         # results can be more than one
         r = []
-        # T: need to check self._loves only
-        if self.is_T(self._loves):
+        # B: need to check self._loves only
+        if self.is_B(self._loves):
             r.append( BISEXUAL )
-        # B: need to check phisical gender and mental gender
-        if self.is_B(self._phisically, self._mentally):
+        # T: need to check phisical gender and mental gender
+        if self.is_T(self._phisically, self._mentally):
             r.append( TRANSGENDER )
         # G & L: need to check all
         if self.is_G(self._phisically, self._mentally, self._loves):
@@ -49,12 +49,12 @@ class Person:
     """
     https://docs.google.com/spreadsheets/d/1-y9vlGV9OrRkGmbTgLlycXSqeN4fATVrpXFtLYf0xqU/edit?usp=sharing
     """
-    def is_T(self, loves):
+    def is_B(self, loves):
         if len(loves) == 2 \
            and MALE in loves and FEMALE in loves:
             return True
         return False
-    def is_B(self, phisically, mentally):
+    def is_T(self, phisically, mentally):
         if phisically != mentally:
             return True
         return False

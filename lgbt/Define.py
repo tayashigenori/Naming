@@ -4,8 +4,8 @@
 MALE = 11
 FEMALE = 12
 GENDER_NAMES = {
-    MALE: u"男",
-    FEMALE: u"女"
+    MALE: "男",
+    FEMALE: "女"
     }
 
 STRAIGHT = 20
@@ -14,9 +14,9 @@ GAY = 22
 BISEXUAL = 23
 TRANSGENDER = 24
 LGBT_NAMES = {
-    STRAIGHT: u'straight',
-    LESBIAN: u'L',
-    GAY: u'G',
-    BISEXUAL: u'B',
-    TRANSGENDER: u'T'
+    STRAIGHT: 'straight',
+    LESBIAN: 'L',
+    GAY: 'G',
+    BISEXUAL: 'B',
+    TRANSGENDER: 'T'
     }
