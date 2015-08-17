@@ -3,6 +3,7 @@
 
 import sys
 import codecs
+import getopt
 
 sys.stdout = codecs.getwriter('shift_jis')(sys.stdout)
 
@@ -26,28 +27,76 @@ def convert_lgbt_to_string(lgbt):
     except IndexError:
         return u""
 
+def usage():
+    sys.stderr.write("%s -p m -m m --loves m,f")
+    sys.stderr.write("%s --phisically=male --mentally=male --loves=male,female")
+    sys.exit(1)
+
 def main():
-    people = (Person(phisically = MALE,   mentally = MALE,   loves = MALE),
-              Person(phisically = MALE,   mentally = MALE,   loves = FEMALE),
-              Person(phisically = MALE,   mentally = MALE,   loves = [MALE, FEMALE]),
-              Person(phisically = MALE,   mentally = FEMALE, loves = MALE),
-              Person(phisically = MALE,   mentally = FEMALE, loves = FEMALE),
-              Person(phisically = MALE,   mentally = FEMALE, loves = [MALE, FEMALE]),
-              Person(phisically = FEMALE, mentally = MALE,   loves = MALE),
-              Person(phisically = FEMALE, mentally = MALE,   loves = FEMALE),
-              Person(phisically = FEMALE, mentally = MALE,   loves = [MALE, FEMALE]),
-              Person(phisically = FEMALE, mentally = FEMALE, loves = MALE),
-              Person(phisically = FEMALE, mentally = FEMALE, loves = FEMALE),
-              Person(phisically = FEMALE, mentally = FEMALE, loves = [MALE, FEMALE]),
-              )
-    for person in people:
-        message = u"I am phisically %s, mentally %s and loves %s\n" %(
-            convert_gender_to_string(person._phisically),
-            convert_gender_to_string(person._mentally),
-            convert_gender_to_string(person._loves)
+    # get options
+    try:
+        opts, args = getopt.getopt(sys.argv[1:],
+                                   "hp:m:l:v",
+                                   ["help", "phisically=", "mentally=", "loves="])
+    except getopt.GetoptError, err:
+        # ヘルプメッセージを出力して終了
+        print str(err) # will print something like "option -a not recognized"
+        usage()
+        sys.exit(2)
+    phisically_str = None
+    mentally_str = None
+    loves_str = None
+    verbose = False
+    for o, a in opts:
+        if o == "-v":
+            verbose = True
+        elif o in ("-h", "--help"):
+            usage()
+            sys.exit()
+        elif o in ("-p", "--phisically"):
+            phisically_str = a
+        elif o in ("-m", "--mentally"):
+            mentally_str = a
+        elif o in ("-l", "--loves"):
+            loves_str = a.split(",")
+        else:
+            assert False, "unhandled option"
+
+    # if values unspecified get them interactivelly
+    if phisically_str == None:
+        sys.stderr.write("Enter your phisical gender: ")
+        phisically_str = sys.stdin.readline().strip()
+    if mentally_str == None:
+        sys.stderr.write("Enter your mental gender: ")
+        mentally_str = sys.stdin.readline().strip()
+    if loves_str == None:
+        answers = {}
+        sys.stderr.write("Do you love male? (y/n) ")
+        answers['male'] = sys.stdin.readline().strip()
+        sys.stderr.write("Do you love female? (y/n) ")
+        answers['female'] = sys.stdin.readline().strip()
+        loves_str = ",".join(
+            [gender for gender,answer in answers.items() if answer.lower() in ('y', 'yes') ]
             )
-        message += u"\tthey call me %s\n" %convert_lgbt_to_string( person.get_lgbt() )
-        sys.stdout.write(message)
+
+    d = {
+        'm': MALE,
+        'male': MALE,
+        'f': FEMALE,
+        'female': FEMALE,
+        }
+    person = Person(
+        phisically = d.get(phisically_str, False),
+        mentally = d.get(mentally_str, False),
+        loves = [d.get(l, False) for l in loves_str.split(',')],
+        )
+    message = u"I am phisically %s, mentally %s and loves %s\n" %(
+        convert_gender_to_string(person._phisically),
+        convert_gender_to_string(person._mentally),
+        convert_gender_to_string(person._loves)
+        )
+    message += u"\tthey call me %s\n" %convert_lgbt_to_string( person.get_lgbt() )
+    sys.stdout.write(message)
 
 if __name__ == '__main__':
     main()
