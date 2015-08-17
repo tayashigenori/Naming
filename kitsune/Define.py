@@ -4,29 +4,29 @@
 LOCATION_KANTOU = 11
 LOCATION_KANSAI = 12
 LOCATION_NAMES = {
-    LOCATION_KANTOU: "関東",
-    LOCATION_KANSAI: "関西"
+    LOCATION_KANTOU: u"関東",
+    LOCATION_KANSAI: u"関西"
     }
 
 NOODLE_SOBA = 21
 NOODLE_UDON = 22
 NOODLE_NAMES = {
-    NOODLE_SOBA: "そば",
-    NOODLE_UDON: "うどん"
+    NOODLE_SOBA: u"そば",
+    NOODLE_UDON: u"うどん"
     }
 
 TOPPING_ABURAAGE = 31
 TOPPING_TENKASU = 32
 NO_TOPPING = 30
 TOPPING_NAMES = {
-    TOPPING_ABURAAGE: "油揚げ",
-    TOPPING_TENKASU: "天かす",
-    NO_TOPPING: "トッピングなし"
+    TOPPING_ABURAAGE: u"油揚げ",
+    TOPPING_TENKASU: u"天かす",
+    NO_TOPPING: u"トッピングなし"
     }
 
 KITSUNE = 41
 TANUKI = 42
 NAMES = {
-    KITSUNE: "きつね",
-    TANUKI: "たぬき"
+    KITSUNE: u"きつね",
+    TANUKI: u"たぬき"
     }

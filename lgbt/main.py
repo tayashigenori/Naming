@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-OUTPUT_ENCODING="shift-jis"
-
 import sys
+import codecs
+
+sys.stdout = codecs.getwriter('shift_jis')(sys.stdout)
 
 from Person import Person
 from Define import *
@@ -46,7 +47,7 @@ def main():
             convert_gender_to_string(person._loves)
             )
         message += u"\tthey call me %s\n" %convert_lgbt_to_string( person.get_lgbt() )
-        sys.stdout.write(message.encode(OUTPUT_ENCODING))
+        sys.stdout.write(message)
 
 if __name__ == '__main__':
     main()

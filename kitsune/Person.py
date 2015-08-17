@@ -36,7 +36,7 @@ class Kantoujin(Person):
         """
         prefix = ""
         if noodle._has_age and noodle._has_tenkasu:
-            raise Exception("こんな食べ物見たことないよ！")
+            raise Exception(u"こんな食べ物見たことないよ！")
         if noodle._has_age:
             prefix = "きつね"
         if noodle._has_tenkasu:
