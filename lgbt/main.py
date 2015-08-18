@@ -5,7 +5,7 @@ import sys
 import codecs
 import getopt
 
-sys.stdout = codecs.getwriter('shift_jis')(sys.stdout)
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
 from Person import Person
 from Define import *
