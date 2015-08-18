@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
+import sys, os
 import codecs
 import getopt
 
@@ -28,8 +28,8 @@ def convert_lgbt_to_string(lgbt):
         return u""
 
 def usage():
-    sys.stderr.write("%s -p m -m m --loves m,f")
-    sys.stderr.write("%s --phisically=male --mentally=male --loves=male,female")
+    sys.stderr.write("%s -p m -m m -l m,f\n" %os.path.basename(__file__))
+    sys.stderr.write("%s --phisically=male --mentally=male --loves=male,female\n" %os.path.basename(__file__))
     sys.exit(1)
 
 def main():
@@ -58,7 +58,7 @@ def main():
         elif o in ("-m", "--mentally"):
             mentally_str = a
         elif o in ("-l", "--loves"):
-            loves_str = a.split(",")
+            loves_str = a
         else:
             assert False, "unhandled option"
 
