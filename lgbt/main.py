@@ -90,12 +90,15 @@ def main():
         mentally = d.get(mentally_str, False),
         loves = [d.get(l, False) for l in loves_str.split(',')],
         )
-    message = u"I am phisically %s, mentally %s and loves %s\n" %(
-        convert_gender_to_string(person._phisically),
-        convert_gender_to_string(person._mentally),
-        convert_gender_to_string(person._loves)
-        )
-    message += u"\tthey call me %s\n" %convert_lgbt_to_string( person.get_lgbt() )
+    message = u"""
+phisically %s + mentally %s + loves %s
+= %s
+""" %(
+      convert_gender_to_string(person._phisically),
+      convert_gender_to_string(person._mentally),
+      convert_gender_to_string(person._loves),
+      convert_lgbt_to_string( person.get_lgbt() ),
+      )
     sys.stdout.write(message)
 
 if __name__ == '__main__':
