@@ -26,6 +26,16 @@ class Noodle:
             r.append( TOPPING_NAMES[TOPPING_TENKASU] )
         return ",".join(r)
 
+    def add_topping(self, topping_int):
+        if topping_int == TOPPING_ABURAAGE:
+            self._has_age = True
+        if topping_int == TOPPING_TENKASU:
+            self._has_tenkasu = True
+        if topping_int == NO_TOPPING:
+            self._has_age = False
+            self._has_tenkasu = False
+        return
+
 class Soba(Noodle):
     def __init__(self, has_age = False, has_tenkasu = False):
         Noodle.__init__(self, has_age, has_tenkasu)
