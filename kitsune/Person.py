@@ -39,11 +39,11 @@ class Kantoujin(Person):
         if noodle._has_age and noodle._has_tenkasu:
             raise Exception(u"こんな食べ物見たことないよ！")
         if noodle._has_age:
-            prefix = "きつね"
+            prefix = NAMES[ KITSUNE ]
         if noodle._has_tenkasu:
-            prefix = "たぬき"
-        return "%s%s" %(prefix,
-                        noodle.get_noodle_type_name())
+            prefix = NAMES[ TANUKI ]
+        return u"%s%s" %(prefix,
+                         noodle.get_noodle_type_name())
     def get_noodle_from_name(self, name):
         result = {}
         for n_int, n_str in NOODLE_NAMES.items():
