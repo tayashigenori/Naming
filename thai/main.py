@@ -133,7 +133,7 @@ def get_chars(filename, separator = u"\t"):
 
 
 def main():
-    chars = get_chars("./characters.txt")
+    chars = get_chars("./consonants.txt")
     print chars
     return
 
