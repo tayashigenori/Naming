@@ -68,8 +68,7 @@ def main():
                       syl["vowel"],
                       consonants[ syl["final"] ],
                       tone_sign = None)
-    TT = ThaiTone(TS)
-    print TT.get_tone(TS)
+    print ThaiTone(TS).get_tone()
     return
 
 if __name__ == '__main__':

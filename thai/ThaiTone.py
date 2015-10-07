@@ -22,56 +22,63 @@ tones = {
 }
 
 class ThaiTone:
-    def __init__(self, c):
-        if c.get_tone_sign() == None: # without tone signs
-            self._instance = ThaiToneWithoutSign(c)
+    def __init__(self, s):
+        self._syllable = s
+        if s.get_tone_sign() == None: # without tone signs
+            self._instance = ThaiToneWithoutSign(s)
         else:
-            self._instance = ThaiToneWithSign()
+            self._instance = ThaiToneWithSign(s)
         return
-    def get_tone(self, c):
-        return self._instance.get_tone(c)
+    def get_tone(self,):
+        return self._instance.get_tone()
 """
 with sign
 """
 class ThaiToneWithSign:
-    def get_tone(self, c):
-        return self.get_tone_by_init_and_ts(c.get_init(),
-                                            c.get_tone_sign(),
+    def get_tone(self, s):
+        self._syllable = s
+        return self.get_tone_by_init_and_ts(s.get_init(),
+                                            s.get_tone_sign(),
                                             )
     def get_tone_by_init_and_ts(self, init, tone_sign):
         # LOW or not
         if init.is_low():
             # TODO: throw error if tone_sign == MAI_3, MAI_4
-            return tones[tone_sign + 1]
+            return tones[ tone_sign + 1 ]
         else:#if init.is_low == False:
-            return tones[tone_sign]
+            return tones[ tone_sign ]
 """
 without sign
 """
 class ThaiToneWithoutSign:
-    def __init__(self, c):
-        if self.is_alive(c):
-            self._instance = ThaiToneWithoutSignAlive()
+    def __init__(self, s):
+        self._syllable = s
+        if self.is_alive(s):
+            self._instance = ThaiToneWithoutSignAlive(s)
         else:
-            self._instance = ThaiToneWithoutSignDead()
+            self._instance = ThaiToneWithoutSignDead(s)
         return
-    def is_alive(self, c): # 平音
-        return self.is_dead(c) != True
-    def is_dead(self, c): # 促音
-        init = c.get_init()
-        vowel = c.get_vowel()
-        final = c.get_final()
-        if final != False: # with final consonant
+    def is_alive(self, s): # 平音
+        return self.is_dead(s) != True
+    def is_dead(self, s): # 促音
+        init = s.get_init()
+        vowel = s.get_vowel()
+        final = s.get_final()
+        if final != None: # with final consonant
             return final.get_fsound() in (u"-k", u"-t", u"-p")
         else: #if final == False: # without final consonant
             return vowel().is_long() == False
-    def get_tone(self, c):
-        return self._instance.get_tone(c)
+    def get_tone(self,):
+        return self._instance.get_tone()
 
 class ThaiToneWithoutSignAlive:
     DEFAULT_TONE_SIGN = MAI_0
-    def get_tone(self, c):
-        return self.get_tone_by_init( c.get_init() )
+    def __init__(self, s):
+        self._syllable = s
+        return
+    def get_tone(self,):
+        init = self._syllable.get_init()
+        return self.get_tone_by_init( init )
     def get_tone_by_init(self, init):
         # non-HIGH or HIGH
         if init.is_high() == False:
@@ -81,12 +88,13 @@ class ThaiToneWithoutSignAlive:
 
 class ThaiToneWithoutSignDead:
     DEFAULT_TONE_SIGN = MAI_1
-    def __init__(self,):
+    def __init__(self, s):
+        self._syllable = s
         self._instance = ThaiToneWithSign()
         return
-    def get_tone(self, c):
-        init = c.get_init()
-        vowel = c.get_vowel()
+    def get_tone(self,):
+        init = self._syllable.get_init()
+        vowel = self._syllable.get_vowel()
         return self.get_tone_by_init_and_vowel(init, vowel)
     def get_tone_by_init_and_vowel(self, init, vowel):
         v_ts = self._get_virtual_tone_sign(init, vowel)
