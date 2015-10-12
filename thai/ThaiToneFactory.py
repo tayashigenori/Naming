@@ -21,7 +21,7 @@ tones = {
     MAI_4: TONE_RISING,
 }
 
-class ThaiTone:
+class ThaiToneFactory:
     def __init__(self, s):
         self._syllable = s
         if s.get_tone_sign() == None: # without tone signs
@@ -61,13 +61,12 @@ class ThaiToneWithoutSign:
     def is_alive(self, s): # 平音
         return self.is_dead(s) != True
     def is_dead(self, s): # 促音
-        init = s.get_init()
         vowel = s.get_vowel()
         final = s.get_final()
         if final != None: # with final consonant
             return final.get_fsound() in (u"-k", u"-t", u"-p")
         else: #if final == False: # without final consonant
-            return vowel().is_long() == False
+            return vowel.is_short()
     def get_tone(self,):
         return self._instance.get_tone()
 
@@ -84,24 +83,25 @@ class ThaiToneWithoutSignAlive:
         if init.is_high() == False:
             return tones[ self.DEFAULT_TONE_SIGN ]
         else:
-            return tones[ self.DEFAULT_TONE_SIGN - 1]
+            return tones[ self.DEFAULT_TONE_SIGN - 1 ]
 
 class ThaiToneWithoutSignDead:
     DEFAULT_TONE_SIGN = MAI_1
     def __init__(self, s):
         self._syllable = s
+        # MAI_1 付きのケースとほぼ同じ
         self._instance = ThaiToneWithSign()
+        self._v_tone_sign = self._get_virtual_tone_sign(s)
         return
+    def _get_virtual_tone_sign(self, s):
+        init = s.get_init()
+        vowel = s.get_vowel()
+        if init.is_low() and vowel.is_short():
+            return self.DEFAULT_TONE_SIGN + 1
+        return self.DEFAULT_TONE_SIGN
     def get_tone(self,):
         init = self._syllable.get_init()
-        vowel = self._syllable.get_vowel()
-        return self.get_tone_by_init_and_vowel(init, vowel)
-    def get_tone_by_init_and_vowel(self, init, vowel):
-        v_ts = self._get_virtual_tone_sign(init, vowel)
-        return self._instance.get_tone_by_init_and_ts(init, v_ts)
-    def _get_virtual_tone_sign(self, init, vowel):
-        if init.is_low():
-            if vowel.is_long() == False:
-                return self.DEFAULT_TONE_SIGN + 1
-        return self.DEFAULT_TONE_SIGN
-
+        return self._instance.get_tone_by_init_and_ts(
+            init,
+            self._v_tone_sign
+            )

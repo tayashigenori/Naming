@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from ThaiTone import ThaiTone
+from ThaiToneFactory import ThaiToneFactory
 
 class ThaiSyllable:
     def __init__(self, init, vowel, final = None, tone_sign = None):
@@ -24,6 +24,10 @@ class ThaiVowel:
         # TODO
         self._is_long = True
         return
+    def is_long(self,):
+        return self._is_long
+    def is_short(self,):
+        return self.is_long() != True
 
 class ThaiConsonant:
     def __init__(self, char, height, sound_as_initial, sound_as_final = None):
@@ -45,7 +49,7 @@ class ThaiConsonant:
     def is_high(self,):
         return self._height == u"H"
 
-def get_consonants(filename = "./consonants.txt", separator = u"\t"):
+def get_consonants(filename = "./consonants.tsv", separator = u"\t"):
     r = {}
     f = open(filename)
     try:
@@ -68,8 +72,8 @@ def main():
                       syl["vowel"],
                       consonants[ syl["final"] ],
                       tone_sign = None)
-    print ThaiTone(TS).get_tone()
-    return
+    tt = ThaiToneFactory(TS)
+    print tt.get_tone()
 
 if __name__ == '__main__':
     main()
